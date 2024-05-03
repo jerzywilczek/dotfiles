@@ -784,7 +784,8 @@ $env.config = {
     ]
 }
 
-def "backup history" [] {
+# Backup the shell history
+def "backup history" []: nothing -> nothing {
     let backup_path = $nu.history-path | path split | drop 1 | append "history.bak" | path join
 
     if ($backup_path | path exists) {
@@ -801,16 +802,31 @@ def "backup history" [] {
     }
 }
 
-def up [] {
+# Perform a full system update.
+def up []: nothing -> nothing {
     backup history
     if (sys | get host.name) =~ "Arch" {
         paru
     } else {
         sudo nala upgrade
     }
+    up light
+}
+
+# Perform a light system update (no root filesystem updates, only user packages)
+def "up light" []: nothing -> nothing {
     flatpak update
     flatpak uninstall --unused
     cargo install-update -a
+}
+
+export alias upl = up light
+
+# Searches the available aliases for ones where the given string is part of their expansion.
+def aliases [
+    alias: string # the alias to search
+]: nothing -> any {
+    scope aliases | select name expansion | where expansion =~ $alias
 }
 
 use ~/.cache/starship/init.nu
@@ -821,7 +837,6 @@ use ~/.cache/starship/init.nu
 
 source ~/.config/nushell/git-aliases.nu
 
-# use ~/.config/nushell/monokai-dark.nu
 use ~/.config/nushell/catpuccin-macchiato.nu
 $env.config = ($env.config | merge {color_config: (catpuccin-macchiato)})
 source ~/.zoxide.nu
