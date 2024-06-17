@@ -17,6 +17,7 @@ vim.opt.undofile = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
+
 -- Make unwanted invisible characters visible
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
@@ -58,10 +59,18 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
+local function trim_whitespaces()
+    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false);
+    for i, line in ipairs(lines) do
+        lines[i] = string.gsub(line, "%s+$", "")
+    end
+    vim.api.nvim_buf_set_lines(0, 0, -1, true, lines)
+end
+
 local remove_trailing_whitespace_group = vim.api.nvim_create_augroup('RmTrWhitespace', {})
 vim.api.nvim_create_autocmd('BufWritePre', {
+  callback = trim_whitespaces,
   group = remove_trailing_whitespace_group,
   pattern = '*',
-  command = [[%s/\s\+$//e]],
 })
 
