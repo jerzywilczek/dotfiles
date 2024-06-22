@@ -74,3 +74,6 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = '*',
 })
 
+if vim.env.ZELLIJ then
+  os.execute("zellij action switch-mode locked")
+end
