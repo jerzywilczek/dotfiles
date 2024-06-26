@@ -77,7 +77,13 @@ $env.NU_PLUGIN_DIRS = [
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # $env.PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
 
-$env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.cargo/bin")
+$env.PATH = ($env.PATH | split row (char esep) | prepend $"($env.HOME)/.cargo/bin" | uniq)
+
+let home_local_bin_path = $"($env.HOME)/.local/bin"
+
+if ($home_local_bin_path | path exists) {
+    $env.PATH = ($env.PATH | split row (char esep) | prepend $home_local_bin_path | uniq)
+}
 
 $env.EDITOR = "nvim"
 $env.BAT_THEME = "Catppuccin Macchiato"
