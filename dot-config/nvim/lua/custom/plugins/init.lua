@@ -6,12 +6,6 @@ return {
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
-  -- Diagnostics list for the whole project
-  {
-    "folke/trouble.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-  },
-
   -- Surrounding with brackets and whatnot
   "tpope/vim-surround",
 

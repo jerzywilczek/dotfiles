@@ -36,11 +36,6 @@ local on_attach = function(client, bufnr)
   if client.server_capabilities.inlayHintProvider then
     vim.lsp.inlay_hint.enable(true)
   end
-
-  -- Trouble keybind
-  vim.keymap.set('n', '<leader>tt', function()
-    require("trouble").toggle("workspace_diagnostics")
-  end, { buffer = bufnr, desc = "Toggle [T]rouble" })
 end
 
 -- mason-lspconfig requires that these setup functions are called in this order
