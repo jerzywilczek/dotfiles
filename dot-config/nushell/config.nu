@@ -863,6 +863,7 @@ use ~/.cache/starship/init.nu
 # use ~/.config/nu_stuff/man-completions.nu *
 
 source ~/.config/nushell/zellij-completions.nu
+source ~/.config/nushell/zellij-aliases.nu
 source ~/.config/nushell/git-aliases.nu
 
 use ~/.config/nushell/catpuccin-macchiato.nu
