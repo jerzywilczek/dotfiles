@@ -869,3 +869,13 @@ use ~/.config/nushell/catpuccin-macchiato.nu
 $env.config = ($env.config | merge {color_config: (catpuccin-macchiato)})
 source ~/.zoxide.nu
 
+if 'ZELLIJ' not-in $env {
+    if $env.ZELLIJ_AUTO_ATTACH? == 'true' {
+        zellij attach --create
+    } else {
+        zellij
+    }
+    if $env.ZELLIJ_AUTO_EXIT? == 'true' {
+        exit
+    }
+}

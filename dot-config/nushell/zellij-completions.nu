@@ -134,7 +134,7 @@ export extern "zellij action new-tab" [
 
 # Attach to a session
 export extern "zellij attach" [
-  session_name: string@"nu-complete sessions" # Name of the session to attach to
+  session_name?: string@"nu-complete sessions" # Name of the session to attach to
   command?: string@"nu-complete zellij attach"
   --create(-c) # Create a session if one does not exist
   --help(-h)   # Print help information
