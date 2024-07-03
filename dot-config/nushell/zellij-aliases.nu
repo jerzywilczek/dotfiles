@@ -10,15 +10,15 @@ def zri [...command: string] {
   zellij run --name $"($command)" --in-place -- nu -c ...$command
 }
 
-def ze [file: string] {
+def ze [file: path] {
   zellij edit $file
 }
 
-def zef [file: string] {
+def zef [file: path] {
   zellij edit --floating $file
 }
 
-def zei [file: string] {
+def zei [file: path] {
   zellij edit --in-place $file
 }
 
@@ -30,7 +30,7 @@ def zpipe [plugin?: string] {
   }
 }
 
-def zws [folder?: string] {
+def zws [folder?: path] {
     if ($folder == null) {
         zellij action new-tab --layout workspace
     } else {
