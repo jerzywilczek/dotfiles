@@ -1,3 +1,4 @@
 oldconfig-*
 oldenv-*
 history*
+local_env.nu
