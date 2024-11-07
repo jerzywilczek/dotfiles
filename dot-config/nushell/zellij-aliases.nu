@@ -31,9 +31,7 @@ def zpipe [plugin?: string] {
 }
 
 def zws [folder?: path] {
-    if ($folder == null) {
-        zellij action new-tab --layout workspace
-    } else {
-        zellij action new-tab --layout workspace --cwd $folder
-    }
+  let folder = $folder | default $env.PWD
+  let name = $folder | path split | last
+  zellij action new-tab --layout workspace --cwd $folder --name $name
 }
