@@ -843,7 +843,7 @@ def up []: nothing -> nothing {
 def "up light" []: nothing -> nothing {
     flatpak update
     flatpak uninstall --unused
-    cargo install-update -a
+    cargo install-update --locked -a
 }
 
 export alias upl = up light
