@@ -19,7 +19,7 @@ local on_attach = function(client, bufnr)
 
   -- See `:help K` for why this keymap
   nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
-  nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
+  vim.keymap.set({ 'n', 'i' }, '<C-k>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Signature Documentation' })
 
   -- Lesser used LSP functionality
   nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
@@ -34,7 +34,9 @@ local on_attach = function(client, bufnr)
 
   -- Enable inlay hints if possible
   if client.server_capabilities.inlayHintProvider then
-    vim.lsp.inlay_hint.enable(true)
+    if client.name ~= "zls" then
+      vim.lsp.inlay_hint.enable(true)
+    end
   end
 end
 
@@ -67,11 +69,11 @@ local servers = {
     },
   },
 
-  rust_analyzer = {
-    diagnostics = {
-      enable = true,
-    }
-  }
+  rust_analyzer = {},
+
+  zls = {
+    enable_argument_placeholders = false,
+  },
 }
 
 -- This is really weird, but somehow necessary
@@ -103,4 +105,4 @@ mason_lspconfig.setup_handlers {
   end,
 }
 
-require('lspconfig').nushell.setup{}
+require('lspconfig').nushell.setup {}
