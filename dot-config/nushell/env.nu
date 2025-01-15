@@ -85,6 +85,8 @@ if ($home_local_bin_path | path exists) {
 $env.EDITOR = "nvim"
 $env.BAT_THEME = "Catppuccin Macchiato"
 
+$env.DELTA_FEATURES = "+side-by-side line-numbers"
+
 $env.STARSHIP_CONFIG = $"($env.HOME)/.config/nushell/starship_theme.toml"
 mkdir ~/.cache/starship
 starship init nu | save -f ~/.cache/starship/init.nu

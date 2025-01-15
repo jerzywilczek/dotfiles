@@ -855,6 +855,37 @@ def aliases [
     scope aliases | select name expansion | where expansion =~ $alias
 }
 
+def --env "delta toggle" [
+    feature: string
+]: nothing -> nothing {
+    if $feature != "s" and $feature != "l" {
+        print "Use delta-toggle s to toggle side-by-side view"
+        print "Use delta-toggle l to toggle line numbers"
+        return
+    }
+
+    mut line_numbers = $env.DELTA_FEATURES =~ "line-numbers"
+    mut side_by_side = $env.DELTA_FEATURES =~ "side-by-side"
+
+    if $feature == "s" {
+        $side_by_side = not $side_by_side
+    }
+
+    if $feature == "l" {
+        $line_numbers = not $line_numbers
+    }
+
+    $env.DELTA_FEATURES = "+"
+
+    if $side_by_side {
+        $env.DELTA_FEATURES = $"($env.DELTA_FEATURES)side-by-side "
+    }
+
+    if $line_numbers {
+        $env.DELTA_FEATURES = $"($env.DELTA_FEATURES)line-numbers "
+    }
+}
+
 use ~/.cache/starship/init.nu
 
 # use ~/.config/nushell/cargo-completions.nu *
