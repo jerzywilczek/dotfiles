@@ -18,10 +18,13 @@
 [interactive]
     diffFilter = delta --color-only
 
+[include]
+    path = ~/dotfiles/delta/catppuccin.gitconfig
+
 [delta]
     navigate = true  # use n and N to move between diff sections
-    dark = true
-    syntax-theme = Catppuccin Macchiato
+    features = catppuccin-macchiato
 
 [merge]
     conflictstyle = zdiff3
+
