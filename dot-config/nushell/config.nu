@@ -364,12 +364,41 @@ $env.config = {
             }
         }
         {
-            name: history_menu
+            name: fuzzy_history_fzf
             modifier: control
             keycode: char_r
-            mode: [emacs, vi_insert, vi_normal]
-            event: { send: menu name: history_menu }
+            mode: [emacs, vi_normal, vi_insert]
+            event: {
+                send: executehostcommand
+                cmd: "commandline edit --replace (
+                history
+                | get command
+                | reverse
+                | uniq
+                | str join (char -i 0)
+                | fzf --scheme=history --read0 --tiebreak=chunk --layout=reverse --preview='echo {..}' --preview-window='bottom:3:wrap' --bind alt-up:preview-up,alt-down:preview-down --height=70% -q (commandline) --preview='echo -n {} | nu --stdin -c \'nu-highlight\''
+                | decode utf-8
+                | str trim
+                )"
+            }
         }
+        {
+            name: fuzzy_file
+            modifier: control
+            keycode: char_t
+            mode: [emacs, vi_normal, vi_insert]
+            event: {
+                send: executehostcommand
+                cmd: "commandline edit --insert (fzf --layout reverse)"
+            }
+        }
+        # {
+        #     name: history_menu
+        #     modifier: control
+        #     keycode: char_r
+        #     mode: [emacs, vi_insert, vi_normal]
+        #     event: { send: menu name: history_menu }
+        # }
         {
             name: help_menu
             modifier: none
@@ -577,18 +606,18 @@ $env.config = {
                 ]
             }
         }
-        {
-            name: move_down
-            modifier: control
-            keycode: char_t
-            mode: [emacs, vi_normal, vi_insert]
-            event: {
-                until: [
-                    {send: menudown}
-                    {send: down}
-                ]
-            }
-        }
+        # {
+        #     name: move_down
+        #     modifier: control
+        #     keycode: char_t
+        #     mode: [emacs, vi_normal, vi_insert]
+        #     event: {
+        #         until: [
+        #             {send: menudown}
+        #             {send: down}
+        #         ]
+        #     }
+        # }
         {
             name: delete_one_character_backward
             modifier: none
@@ -712,13 +741,13 @@ $env.config = {
             mode: emacs
             event: {edit: cutfromstart}
         }
-        {
-            name: swap_graphemes
-            modifier: control
-            keycode: char_t
-            mode: emacs
-            event: {edit: swapgraphemes}
-        }
+        # {
+        #     name: swap_graphemes
+        #     modifier: control
+        #     keycode: char_t
+        #     mode: emacs
+        #     event: {edit: swapgraphemes}
+        # }
         {
             name: move_one_word_left
             modifier: alt

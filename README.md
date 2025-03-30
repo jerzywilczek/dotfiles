@@ -5,7 +5,7 @@ hello welcome to my dotfiles
 ## Requirements
 
 ```sh
-paru -S neovim-nightly-bin carapace-bin kitty stow cmake ttf-jetbrains-mono-nerd git-delta
+paru -S neovim-nightly-bin carapace-bin kitty stow cmake ttf-jetbrains-mono-nerd git-delta fzf
 cargo install zoxide starship nu
 ```
 
