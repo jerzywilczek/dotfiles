@@ -9,7 +9,7 @@ layout {
             args "."
         }
 
-        pane name="shell"
+        pane
     }
 
 
