@@ -77,3 +77,9 @@ vim.api.nvim_create_autocmd('BufWritePre', {
 if vim.env.ZELLIJ then
   os.execute("zellij action switch-mode locked")
 end
+
+-- Indent with spaces
+vim.o.expandtab = true
+vim.o.shiftwidth = 4
+vim.o.softtabstop = 4
+vim.o.tabstop = 4
