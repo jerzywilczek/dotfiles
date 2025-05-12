@@ -1,0 +1,4 @@
+# this will probably get fixed soon
+# https://github.com/hyprwm/hyprpaper/issues/239
+$wallpaper_display = DP-3
+$wallpaper = ~/Pictures/HERB.png
