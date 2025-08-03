@@ -23,7 +23,7 @@ stow --dotfiles .
 ## Todo
 
 - [ ] add to readme:
-  - installed: hyprland mako xdg-desktop-portal-hyprland hyprpolkitagent qt5-wayland qt6-wayland waybar pavucontrol wlogout hyprpaper hyprlock hypridle brightnessctl hyprshot blueman rofi-wayland network-manager-applet qt6ct rofi-calc
+  - installed: hyprland mako xdg-desktop-portal-hyprland hyprpolkitagent qt5-wayland qt6-wayland waybar pavucontrol wlogout hyprpaper hyprlock hypridle brightnessctl hyprshot blueman rofi-wayland network-manager-applet qt6ct rofi-calc poweralertd
   - template device-specific config and instructions
 - [ ] waybar
   - [x] network
