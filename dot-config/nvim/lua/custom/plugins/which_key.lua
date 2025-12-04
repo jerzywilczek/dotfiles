@@ -1,27 +1,18 @@
--- Useful plugin to show you pending keybinds.
-return {
+return {              -- Useful plugin to show you pending keybinds.
   'folke/which-key.nvim',
-  config = function()
-    local which = require('which-key')
-
-    which.setup({})
-
-    -- register which-key VISUAL mode
-    -- required for visual <leader>hs (hunk stage) to work
-    which.add({
-      { '<leader>', group = 'VISUAL <leader>', mode = 'v' },
-      { '<leader>h', desc = 'Git [H]unk', mode = 'v' },
-    })
-
-    which.add({
+  event = 'VimEnter', -- Sets the loading event to 'VimEnter'
+  opts = {
+    -- delay between pressing a key and opening which-key (milliseconds)
+    -- this setting is independent of vim.o.timeoutlen
+    delay = 0,
+    -- Document existing key chains
+    spec = {
       { '<leader>c', group = '[C]ode'},
       { '<leader>d', group = '[D]ocument'},
-      { '<leader>g', group = '[G]it'},
-      { '<leader>h', group = 'Git [H]unk'},
       { '<leader>r', group = '[R]ename'},
       { '<leader>s', group = '[S]earch'},
       { '<leader>t', group = '[T]oggle'},
       { '<leader>w', group = '[W]orkspace'},
-    })
-  end
+    },
+  },
 }

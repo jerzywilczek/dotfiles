@@ -1,19 +1,17 @@
--- Diagnostics list for the whole project
 return {
-  "folke/trouble.nvim",
+  'folke/trouble.nvim',
   opts = {},
-  cmd = "Trouble",
+  cmd = 'Trouble',
   keys = {
     {
-      "<leader>tt",
-      "<cmd>Trouble diagnostics toggle focus=true<cr>",
-      desc = "toggle [T]rouble (diagnostics)",
+      '<leader>tt',
+      '<cmd>Trouble diagnostics toggle focus=true<cr>',
+      desc = 'toggle [T]rouble (diagnostics)',
     },
     {
-      "<leader>ts",
-      "<cmd>Trouble symbols toggle focus=true<cr>",
-      desc = "toggle [T]rouble ([S]ymbols)",
+      '<leader>ts',
+      '<cmd>Trouble symbols toggle focus=true<cr>',
+      desc = 'toggle [T]rouble ([S]ymbols)',
     },
-  }
+  },
 }
-

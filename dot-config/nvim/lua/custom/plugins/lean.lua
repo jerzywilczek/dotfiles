@@ -8,7 +8,7 @@ return {
     -- optional dependencies:
 
     -- a completion engine
-    'hrsh7th/nvim-cmp',
+    'saghen/blink.cmp',
 
     'nvim-telescope/telescope.nvim', -- for 2 Lean-specific pickers
     -- 'andymass/vim-matchup',          -- for enhanced % motion behavior
@@ -16,6 +16,7 @@ return {
     -- 'tomtom/tcomment_vim',           -- for commenting
   },
 
+  ---@module 'lean'
   ---@type lean.Config
   opts = { -- see below for full configuration options
     mappings = true,
