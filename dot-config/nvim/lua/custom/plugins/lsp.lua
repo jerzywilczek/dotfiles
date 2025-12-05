@@ -42,7 +42,7 @@ return {
         local client = vim.lsp.get_client_by_id(event.data.client_id)
         if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
           -- if client.name ~= "zls" then
-          --   vim.lsp.inlay_hint.enable(true)
+          vim.lsp.inlay_hint.enable(true)
           -- end
 
           map('<leader>th', function()
@@ -56,7 +56,7 @@ return {
       severity_sort = true,
       -- float = { border = 'rounded', source = 'if_many' },
       float = false,
-      underline = { severity = {vim.diagnostic.severity.ERROR, vim.diagnostic.severity.WARN} },
+      underline = true,
       signs = {
         text = {
           [vim.diagnostic.severity.ERROR] = '󰅚 ',
@@ -81,11 +81,11 @@ return {
       },
       virtual_lines = {
         severity = { vim.diagnostic.severity.WARN, vim.diagnostic.severity.ERROR },
-        current_line = true
+        current_line = true,
       },
       jump = {
         float = false,
-      }
+      },
     }
 
     local capabilities = require('blink.cmp').get_lsp_capabilities()
