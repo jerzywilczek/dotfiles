@@ -1,0 +1,6 @@
+$wallpaper = ~/Pictures/HERB.png
+
+wallpaper {
+  monitor =
+  path = $wallpaper
+}
