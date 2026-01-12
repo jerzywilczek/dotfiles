@@ -4,3 +4,5 @@ wallpaper {
   monitor =
   path = $wallpaper
 }
+
+splash = false
