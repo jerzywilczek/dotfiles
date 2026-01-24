@@ -21,13 +21,13 @@ return {
         map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
         map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-        local telescope = require 'telescope.builtin'
-        map('gd', telescope.lsp_definitions, '[G]oto [D]efinition')
-        map('gr', telescope.lsp_references, '[G]oto [R]eferences')
-        map('gI', telescope.lsp_implementations, '[G]oto [I]mplementation')
-        map('<leader>D', telescope.lsp_type_definitions, 'Type [D]efinition')
-        map('<leader>ds', telescope.lsp_document_symbols, '[D]ocument [S]ymbols')
-        map('<leader>ws', telescope.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+        -- local telescope = require 'telescope.builtin'
+        -- map('gd', telescope.lsp_definitions, '[G]oto [D]efinition')
+        -- map('gr', telescope.lsp_references, '[G]oto [R]eferences')
+        -- map('gI', telescope.lsp_implementations, '[G]oto [I]mplementation')
+        -- map('<leader>D', telescope.lsp_type_definitions, 'Type [D]efinition')
+        -- map('<leader>ds', telescope.lsp_document_symbols, '[D]ocument [S]ymbols')
+        -- map('<leader>ws', telescope.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
         -- See `:help K` for why this keymap
         map('K', vim.lsp.buf.hover, 'Hover Documentation')

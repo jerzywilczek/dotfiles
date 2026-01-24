@@ -10,7 +10,7 @@ return {
     -- a completion engine
     'saghen/blink.cmp',
 
-    'nvim-telescope/telescope.nvim', -- for 2 Lean-specific pickers
+    -- 'nvim-telescope/telescope.nvim', -- for 2 Lean-specific pickers
     -- 'andymass/vim-matchup',          -- for enhanced % motion behavior
     -- 'andrewradev/switch.vim',        -- for switch support
     -- 'tomtom/tcomment_vim',           -- for commenting
