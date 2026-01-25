@@ -10,11 +10,13 @@ return {
         input = {
           keys = {
             ["<Esc>"] = { "close", mode = { "n", "i" } },
+            ["<C-c>"] = { "cancel" }
           }
         }
       }
     },
   },
+
   keys = {
     -- profiler
     {

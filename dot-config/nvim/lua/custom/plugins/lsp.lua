@@ -3,7 +3,6 @@ return {
   dependencies = {
     { 'mason-org/mason.nvim', opts = {} },
     'mason-org/mason-lspconfig.nvim',
-    'WhoIsSethDaniel/mason-tool-installer.nvim',
     'mini',
 
     'saghen/blink.cmp',
@@ -20,14 +19,6 @@ return {
 
         map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
         map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
-
-        -- local telescope = require 'telescope.builtin'
-        -- map('gd', telescope.lsp_definitions, '[G]oto [D]efinition')
-        -- map('gr', telescope.lsp_references, '[G]oto [R]eferences')
-        -- map('gI', telescope.lsp_implementations, '[G]oto [I]mplementation')
-        -- map('<leader>D', telescope.lsp_type_definitions, 'Type [D]efinition')
-        -- map('<leader>ds', telescope.lsp_document_symbols, '[D]ocument [S]ymbols')
-        -- map('<leader>ws', telescope.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
         -- See `:help K` for why this keymap
         map('K', vim.lsp.buf.hover, 'Hover Documentation')
@@ -88,8 +79,7 @@ return {
       },
     }
 
-    local capabilities = require('blink.cmp').get_lsp_capabilities()
-
+    ---@type table<string, vim.lsp.Config>
     local servers = {
       lua_ls = {
         settings = {
@@ -97,37 +87,40 @@ return {
             completion = {
               callSnippet = 'Replace',
             },
-            diagnostics = { disable = { 'missing-fields' } },
           },
         },
       },
 
-      rust_analyzer = {},
+      rust_analyzer = {
+        settings = {
+          ['rust-analyzer'] = {
+            completion = {
+              callable = {
+                snippets = 'add_parentheses',
+              },
+            },
+          },
+        },
+      },
 
       zls = {
-        enable_argument_placeholders = false,
+        settings = {
+          enable_argument_placeholders = false,
+        }
       },
     }
+
+    for server_name, config in pairs(servers) do
+      vim.lsp.config(server_name, config)
+    end
 
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {
       'stylua',
     })
-    require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
     require('mason-lspconfig').setup {
-      ensure_installed = {}, -- explicitly set to an empty table (install via mason-tool-installer)
-      automatic_installation = false,
-      handlers = {
-        function(server_name)
-          local server = servers[server_name] or {}
-          -- This handles overriding only values explicitly passed
-          -- by the server configuration above. Useful when disabling
-          -- certain features of an LSP (for example, turning off formatting for ts_ls)
-          server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-          require('lspconfig')[server_name].setup(server)
-        end,
-      },
+      ensure_installed = ensure_installed,
     }
   end,
 }
