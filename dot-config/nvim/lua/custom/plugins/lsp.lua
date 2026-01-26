@@ -106,13 +106,15 @@ return {
       zls = {
         settings = {
           enable_argument_placeholders = false,
-        }
+        },
       },
     }
 
     for server_name, config in pairs(servers) do
       vim.lsp.config(server_name, config)
     end
+
+    vim.lsp.enable('nushell')
 
     local ensure_installed = vim.tbl_keys(servers or {})
     vim.list_extend(ensure_installed, {

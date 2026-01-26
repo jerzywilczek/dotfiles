@@ -99,6 +99,9 @@ $env.FZF_DEFAULT_OPTS = "
 --color=border:\#363a4f,label:\#cad3f5
 "
 
+$env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
+mkdir $"($nu.cache-dir)"
+carapace _carapace nushell | save --force $"($nu.cache-dir)/carapace.nu"
 const local_env_path = "~/.config/nushell/local_env.nu"
 
 if ($local_env_path | path exists) {
