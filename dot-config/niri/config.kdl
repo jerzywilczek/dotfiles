@@ -374,6 +374,7 @@ workspace "Browser"
 window-rule {
     match at-startup=true app-id=r#"firefox$"#
     open-on-workspace "Browser"
+    open-maximized-to-edges true
 }
 
 workspace "Terminal"
@@ -426,7 +427,6 @@ binds {
     Mod+C hotkey-overlay-title="Run a calculator: rofi" { spawn-sh "rofi -show calc -modi calc -no-show-match -no-sort"; }
     Mod+Escape hotkey-overlay-title="Lock the Screen: hyprlock" { spawn "hyprlock"; }
     Mod+B { spawn "firefox"; }
-    Mod+M { quit; }
     Mod+S { screenshot; }
 
     // Example volume keys mappings for PipeWire & WirePlumber.
@@ -620,7 +620,7 @@ binds {
     // maximize-window-to-edges doesn't: the window expands to the edges of the screen.
     // This bind corresponds to normal window maximizing,
     // e.g. by double-clicking on the titlebar.
-    // Mod+M { maximize-window-to-edges; }
+    Mod+M { maximize-window-to-edges; }
 
     // Expand the focused column to space not taken up by other fully visible columns.
     // Makes the column "fill the rest of the space".

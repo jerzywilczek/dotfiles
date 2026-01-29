@@ -51,5 +51,3 @@ font-family = "JetBrainsMono Nerd Font"
 font-size = 11
 theme = "Catppuccin Macchiato"
 command = "/home/jerzywilczek/.cargo/bin/nu"
-custom-shader = "cursor_trail.glsl"
-custom-shader-animation = "true"
