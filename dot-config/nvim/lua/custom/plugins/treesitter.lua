@@ -1,7 +1,9 @@
 return {
   'nvim-treesitter/nvim-treesitter',
+  branch = 'master',
   dependencies = {
     'nvim-treesitter/nvim-treesitter-textobjects',
+    branch = 'master',
   },
   build = ':TSUpdate',
   main = 'nvim-treesitter.configs',
