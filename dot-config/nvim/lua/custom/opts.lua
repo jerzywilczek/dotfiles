@@ -17,7 +17,6 @@ vim.opt.undofile = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
-
 -- Make unwanted invisible characters visible
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
@@ -49,6 +48,9 @@ vim.opt.shell = 'nu'
 -- Don't use swapfiles
 vim.opt.swapfile = false
 
+-- Rounded window borders
+vim.o.winborder = 'rounded'
+
 -- Highlight on yank
 local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
@@ -60,11 +62,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 local function trim_whitespaces()
-    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false);
-    for i, line in ipairs(lines) do
-        lines[i] = string.gsub(line, "%s+$", "")
-    end
-    vim.api.nvim_buf_set_lines(0, 0, -1, true, lines)
+  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+  for i, line in ipairs(lines) do
+    lines[i] = string.gsub(line, '%s+$', '')
+  end
+  vim.api.nvim_buf_set_lines(0, 0, -1, true, lines)
 end
 
 local remove_trailing_whitespace_group = vim.api.nvim_create_augroup('RmTrWhitespace', {})
@@ -83,7 +85,7 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 })
 
 if vim.env.ZELLIJ then
-  os.execute("zellij action switch-mode locked")
+  os.execute 'zellij action switch-mode locked'
 end
 
 -- Indent with spaces
