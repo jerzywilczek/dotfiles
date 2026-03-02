@@ -106,6 +106,8 @@ return {
       zls = {
         settings = {
           enable_argument_placeholders = false,
+          enable_build_on_save = true,
+          build_on_save_args = {"check"},
         },
       },
     }
