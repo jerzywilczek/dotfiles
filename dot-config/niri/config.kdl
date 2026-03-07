@@ -285,6 +285,7 @@ spawn-at-startup "waybar"
 spawn-at-startup "hypridle"
 spawn-at-startup "firefox"
 spawn-at-startup "ghostty"
+spawn-at-startup "kanshi"
 
 
 environment {
