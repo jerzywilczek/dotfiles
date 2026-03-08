@@ -48,6 +48,10 @@ vim.opt.shell = 'nu'
 -- Don't use swapfiles
 vim.opt.swapfile = false
 
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.expandtab = true
+
 -- Rounded window borders
 vim.o.winborder = 'rounded'
 
