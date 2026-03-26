@@ -92,8 +92,87 @@ if vim.env.ZELLIJ then
   os.execute 'zellij action switch-mode locked'
 end
 
--- Indent with spaces
-vim.o.expandtab = true
-vim.o.shiftwidth = 4
-vim.o.softtabstop = 4
-vim.o.tabstop = 4
+-- Overwrite a single option for a running LSP client by server name.
+-- Usage: lsp_set("lua_ls", "settings.Lua.diagnostics.globals", { "vim" })
+local function lsp_set(server_name, dotpath, value)
+  for _, client in ipairs(vim.lsp.get_clients({ name = server_name })) do
+    local keys = vim.split(dotpath, ".", { plain = true })
+    local tbl = client.config
+    for i = 1, #keys - 1 do
+      tbl[keys[i]] = tbl[keys[i]] or {}
+      tbl = tbl[keys[i]]
+    end
+    tbl[keys[#keys]] = value
+    client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+  end
+end
+
+vim.api.nvim_create_user_command("LspSet", function(opts)
+  local server, dotpath, raw_value = opts.fargs[1], opts.fargs[2], table.concat(opts.fargs, " ", 3)
+  local ok, value = pcall(loadstring("return " .. raw_value))
+  if not ok then value = raw_value end
+  lsp_set(server, dotpath, value)
+  vim.notify(server .. ": " .. dotpath .. " updated")
+end, {
+  nargs = "+",
+  desc = "Overwrite a single LSP option for this session",
+  complete = function(arg_lead, cmdline, _)
+    local args = vim.split(cmdline, "%s+", { trimempty = true })
+    -- account for trailing space (user is starting next arg)
+    local nargs = #args - 1 -- subtract command name
+    if cmdline:match("%s$") then nargs = nargs + 1 end
+
+    -- arg 1: server name from active clients
+    if nargs <= 1 then
+      local names = {}
+      for _, c in ipairs(vim.lsp.get_clients()) do
+        if vim.startswith(c.name, arg_lead) then
+          names[c.name] = true
+        end
+      end
+      return vim.tbl_keys(names)
+    end
+
+    -- arg 2: dot-path into that server's config
+    if nargs == 2 then
+      local server_name = args[2]
+      local clients = vim.lsp.get_clients({ name = server_name })
+      if #clients == 0 then return {} end
+
+      local function collect_paths(tbl, prefix)
+        local paths = {}
+        if type(tbl) ~= "table" then return paths end
+        for k, v in pairs(tbl) do
+          local full = prefix ~= "" and (prefix .. "." .. k) or k
+          table.insert(paths, full)
+          if type(v) == "table" and not vim.islist(v) then
+            vim.list_extend(paths, collect_paths(v, full))
+          end
+        end
+        return paths
+      end
+
+      local all = collect_paths(clients[1].config, "")
+      return vim.tbl_filter(function(p) return vim.startswith(p, arg_lead) end, all)
+    end
+
+    -- arg 3: current value as a hint
+    if nargs == 3 then
+      local server_name, dotpath = args[2], args[3]
+      local clients = vim.lsp.get_clients({ name = server_name })
+      if #clients == 0 then return {} end
+
+      local val = clients[1].config
+      for _, key in ipairs(vim.split(dotpath, ".", { plain = true })) do
+        if type(val) ~= "table" then break end
+        val = val[key]
+      end
+
+      if val ~= nil then
+        return { vim.inspect(val, { newline = " ", indent = "" }) }
+      end
+    end
+
+    return {}
+  end,
+})
