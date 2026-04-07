@@ -5,7 +5,7 @@ hello welcome to my dotfiles
 ## Requirements
 
 ```sh
-paru -S neovim-nightly-bin carapace-bin kitty stow cmake ttf-jetbrains-mono-nerd git-delta fzf
+paru -S neovim-nightly-bin carapace-bin stow cmake ttf-jetbrains-mono-nerd git-delta fzf hyprland mako xdg-desktop-portal-hyprland hyprpolkitagent qt5-wayland qt6-wayland waybar pavucontrol wlogout hyprpaper hyprlock hypridle brightnessctl hyprshot blueman rofi-wayland network-manager-applet qt6ct rofi-calc poweralertd ghostty niri kanshi
 cargo install zoxide starship nu
 ```
 
@@ -17,25 +17,13 @@ cd ~/dotfiles
 stow --dotfiles .
 ```
 
+Then you need to go through `.template` files, fill them and remove the .template suffix.
+
 ## Fixups
 - this might be neeed: `sudo ln -s /etc/xdg/menus/plasma-applications.menu /etc/xdg/menus/applications.menu`
 
 ## Todo
 
-- [ ] add to readme:
-  - installed: hyprland mako xdg-desktop-portal-hyprland hyprpolkitagent qt5-wayland qt6-wayland waybar pavucontrol wlogout hyprpaper hyprlock hypridle brightnessctl hyprshot blueman rofi-wayland network-manager-applet qt6ct rofi-calc poweralertd
-  - template device-specific config and instructions
 - [ ] waybar
-  - [x] network
-  - [ ] brightness?
-  - [x] power states - test on a PC
-- [x] screenshots hyprshot
-- [x] mako config (notifications daemon)
+  - [ ] brightness
 - [ ] clipboard manager
-- [x] rofi-like launcher
-- [x] wallpaper
-- [x] locking
-- [x] monitor switching
-- [x] wlogout
-- [x] theme qt?
-
