@@ -6,16 +6,16 @@ vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', function()
-  vim.diagnostic.jump { count = -1 }
+  vim.diagnostic.jump({ count = -1 })
 end, { desc = 'Go to previous diagnostic message' })
 vim.keymap.set('n', ']d', function()
-  vim.diagnostic.jump { count = 1 }
+  vim.diagnostic.jump({ count = 1 })
 end, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '[e', function()
-  vim.diagnostic.jump { severity = 'ERROR', count = -1 }
+  vim.diagnostic.jump({ severity = vim.diagnostic.severity.ERROR, count = -1 })
 end)
 vim.keymap.set('n', ']e', function()
-  vim.diagnostic.jump { severity = 'ERROR', count = 1 }
+  vim.diagnostic.jump({ severity = vim.diagnostic.severity.ERROR, count = 1 })
 end)
 
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
@@ -36,3 +36,7 @@ vim.keymap.set({ 'n', 'v' }, '<leader>Y', [["+Y]])
 -- <leader>p from the clipboard
 vim.keymap.set({ 'n', 'v' }, '<leader>p', [["+p]])
 vim.keymap.set({ 'n', 'v' }, '<leader>P', [["+P]])
+
+vim.keymap.set('n', '<leader>tu', function()
+  require('undotree').open()
+end, { desc = '[T]oggle [U]ndotree' })

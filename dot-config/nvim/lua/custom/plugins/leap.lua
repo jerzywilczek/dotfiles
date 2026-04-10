@@ -1,9 +1,9 @@
+---@module 'custom.pack'
+---@type PluginSpec[]
 return {
-  url = 'https://codeberg.org/andyg/leap.nvim',
-
-  lazy = false,
-  config = function(_, opts)
-    local leap = require 'leap'
+  'cb:andyg/leap.nvim',
+  configure = function(opts)
+    local leap = require('leap')
     for k, v in pairs(opts) do
       leap.opts[k] = v
     end

@@ -1,5 +1,7 @@
+---@module 'custom.pack'
+---@type PluginSpec
 return {
-  'folke/snacks.nvim',
+  'gh:folke/snacks.nvim',
 
   ---@module "snacks"
   ---@type snacks.Config
@@ -9,55 +11,68 @@ return {
       win = {
         input = {
           keys = {
-            ["<Esc>"] = { "close", mode = { "n", "i" } },
-            ["<C-c>"] = { "cancel" }
-          }
-        }
-      }
+            ['<Esc>'] = { 'close', mode = { 'n', 'i' } },
+            ['<C-c>'] = { 'cancel' },
+          },
+        },
+      },
     },
   },
 
-  keys = {
+  configure = function(opts)
+    require('snacks').setup(opts)
+
     -- profiler
-    {
-      '<leader>ls',
-      function()
-        Snacks.profiler.scratch()
-      end,
-      desc = 'Profi[L]er [S]cratch Bufer',
-    },
-    {
-      '<leader>ll',
-      function()
-        Snacks.profiler.toggle()
-      end,
-      desc = 'Toggle Profi[L]er',
-    },
-    {
-      '<leader>lh',
-      function()
-        Snacks.profiler.highlight()
-      end,
-      desc = 'Toggle Profi[L]er [H]ighlights',
-    },
+    vim.keymap.set('n', '<leader>ls', function()
+      Snacks.profiler.scratch()
+    end, { desc = 'Profi[L]er [S]cratch Bufer' })
+    vim.keymap.set('n', '<leader>ll', function()
+      Snacks.profiler.toggle()
+    end, { desc = 'Toggle Profi[L]er' })
+    vim.keymap.set('n', '<leader>lh', function()
+      Snacks.profiler.highlight()
+    end, { desc = 'Toggle Profi[L]er [H]ighlights' })
 
     -- picker
-    { '<leader>sh', function() Snacks.picker.help() end, desc = '[S]earch [H]elp' },
-    { '<leader>sk', function() Snacks.picker.keymaps() end, desc = '[S]earch [K]eymaps' },
-    { '<leader>sf', function() Snacks.picker.files() end, desc = '[S]earch [F]iles' },
-    -- { '<leader>ss', function() builtin end, desc = '[S]earch [S]elect Telescope' },
-    -- { '<leader>sw', function() grep_string end, desc = '[S]earch current [W]ord' },
-    { '<leader>sg', function() Snacks.picker.grep() end, desc = '[S]earch by [G]rep' },
-    -- { '<leader>sd', function() diagnostics end, desc = '[S]earch [D]iagnostics' },
-    { '<leader>sr', function() Snacks.picker.resume() end, desc = '[S]earch [R]esume' },
-    { '<leader>?', function() Snacks.picker.recent() end, desc = 'Find recently opened files' },
-    { '<leader>/', function() Snacks.picker.lines() end, desc = 'Serch current buffer by grep' },
+    vim.keymap.set('n', '<leader>sh', function()
+      Snacks.picker.help()
+    end, { desc = '[S]earch [H]elp' })
+    vim.keymap.set('n', '<leader>sk', function()
+      Snacks.picker.keymaps()
+    end, { desc = '[S]earch [K]eymaps' })
+    vim.keymap.set('n', '<leader>sf', function()
+      Snacks.picker.files()
+    end, { desc = '[S]earch [F]iles' })
+    vim.keymap.set('n', '<leader>sg', function()
+      Snacks.picker.grep()
+    end, { desc = '[S]earch by [G]rep' })
+    vim.keymap.set('n', '<leader>sr', function()
+      Snacks.picker.resume()
+    end, { desc = '[S]earch [R]esume' })
+    vim.keymap.set('n', '<leader>?', function()
+      Snacks.picker.recent()
+    end, { desc = 'Find recently opened files' })
+    vim.keymap.set('n', '<leader>/', function()
+      Snacks.picker.lines()
+    end, { desc = 'Serch current buffer by grep' })
 
-    { 'gd', function() Snacks.picker.lsp_definitions() end, desc = '[G]oto [D]efinition' },
-    { 'gr', function() Snacks.picker.lsp_references() end, nowait = true, desc = '[G]oto [R]eferences' },
-    { 'gI', function() Snacks.picker.lsp_implementations() end, desc = '[G]oto [I]mplementation' },
-    { '<leader>D', function() Snacks.picker.lsp_type_definitions() end, desc = 'Type [D]efinition' },
-    { '<leader>ds', function() Snacks.picker.lsp_symbols() end, desc = '[D]ocument [S]ymbols' },
-    { '<leader>ws', function() Snacks.picker.lsp_workspace_symbols() end, desc = '[W]orkspace [S]ymbols' },
-  },
+    vim.keymap.set('n', 'gd', function()
+      Snacks.picker.lsp_definitions()
+    end, { desc = '[G]oto [D]efinition' })
+    vim.keymap.set('n', 'gr', function()
+      Snacks.picker.lsp_references()
+    end, { nowait = true, desc = '[G]oto [R]eferences' })
+    vim.keymap.set('n', 'gI', function()
+      Snacks.picker.lsp_implementations()
+    end, { desc = '[G]oto [I]mplementation' })
+    vim.keymap.set('n', '<leader>D', function()
+      Snacks.picker.lsp_type_definitions()
+    end, { desc = 'Type [D]efinition' })
+    vim.keymap.set('n', '<leader>ds', function()
+      Snacks.picker.lsp_symbols()
+    end, { desc = '[D]ocument [S]ymbols' })
+    vim.keymap.set('n', '<leader>ws', function()
+      Snacks.picker.lsp_workspace_symbols()
+    end, { desc = '[W]orkspace [S]ymbols' })
+  end,
 }
