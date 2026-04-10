@@ -1,15 +1,13 @@
+---@module 'custom.pack'
+---@type PluginSpec
 return {
-  'stevearc/oil.nvim',
-  ---@module 'oil'
-  ---@type oil.SetupOpts
+  'gh:stevearc/oil.nvim',
   opts = {
     default_file_explorer = true,
   },
-  config = function(opts)
+  configure = function(opts)
     require('oil').setup(opts)
 
     vim.keymap.set('n', '<leader>f', '<CMD>Oil<CR>', { desc = 'Open [F]ile explorer' })
   end,
-  dependencies = { 'mini' },
-  lazy = false,
 }

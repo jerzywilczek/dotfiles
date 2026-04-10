@@ -35,7 +35,7 @@ vim.opt.timeoutlen = 300
 vim.opt.scrolloff = 8
 
 -- Set completeopt to have a better completion experience
-vim.opt.completeopt = { 'menuone', 'noselect' }
+vim.opt.completeopt = { 'menuone', 'noinsert', 'popup', 'fuzzy' }
 
 vim.opt.termguicolors = true
 
@@ -80,47 +80,55 @@ vim.api.nvim_create_autocmd('BufWritePre', {
   pattern = '*',
 })
 
-vim.api.nvim_create_autocmd("BufWinEnter", {
-    group = vim.api.nvim_create_augroup("help_window_right", {}),
-    pattern = { "*.txt" },
-    callback = function()
-        if vim.o.filetype == 'help' then vim.cmd.wincmd("L") end
+vim.api.nvim_create_autocmd('BufWinEnter', {
+  group = vim.api.nvim_create_augroup('help_window_right', {}),
+  pattern = { '*.txt' },
+  callback = function()
+    if vim.o.filetype == 'help' then
+      vim.cmd.wincmd('L')
     end
+  end,
 })
 
 if vim.env.ZELLIJ then
-  os.execute 'zellij action switch-mode locked'
+  os.execute('zellij action switch-mode locked')
 end
+
+vim.cmd.packadd('nvim.undotree')
 
 -- Overwrite a single option for a running LSP client by server name.
 -- Usage: lsp_set("lua_ls", "settings.Lua.diagnostics.globals", { "vim" })
 local function lsp_set(server_name, dotpath, value)
   for _, client in ipairs(vim.lsp.get_clients({ name = server_name })) do
-    local keys = vim.split(dotpath, ".", { plain = true })
+    local keys = vim.split(dotpath, '.', { plain = true })
     local tbl = client.config
     for i = 1, #keys - 1 do
       tbl[keys[i]] = tbl[keys[i]] or {}
       tbl = tbl[keys[i]]
     end
     tbl[keys[#keys]] = value
-    client.notify("workspace/didChangeConfiguration", { settings = client.config.settings })
+    client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
   end
 end
 
-vim.api.nvim_create_user_command("LspSet", function(opts)
-  local server, dotpath, raw_value = opts.fargs[1], opts.fargs[2], table.concat(opts.fargs, " ", 3)
-  local ok, value = pcall(loadstring("return " .. raw_value))
-  if not ok then value = raw_value end
+vim.api.nvim_create_user_command('LspSet', function(opts)
+  local server, dotpath, raw_value = opts.fargs[1], opts.fargs[2], table.concat(opts.fargs, ' ', 3)
+  local ok, value = pcall(loadstring('return ' .. raw_value))
+  if not ok then
+    value = raw_value
+  end
   lsp_set(server, dotpath, value)
-  vim.notify(server .. ": " .. dotpath .. " updated")
+  vim.notify(server .. ': ' .. dotpath .. ' updated')
 end, {
-  nargs = "+",
-  desc = "Overwrite a single LSP option for this session",
+  nargs = '+',
+  desc = 'Overwrite a single LSP option for this session',
   complete = function(arg_lead, cmdline, _)
-    local args = vim.split(cmdline, "%s+", { trimempty = true })
+    local args = vim.split(cmdline, '%s+', { trimempty = true })
     -- account for trailing space (user is starting next arg)
     local nargs = #args - 1 -- subtract command name
-    if cmdline:match("%s$") then nargs = nargs + 1 end
+    if cmdline:match('%s$') then
+      nargs = nargs + 1
+    end
 
     -- arg 1: server name from active clients
     if nargs <= 1 then
@@ -137,42 +145,76 @@ end, {
     if nargs == 2 then
       local server_name = args[2]
       local clients = vim.lsp.get_clients({ name = server_name })
-      if #clients == 0 then return {} end
+      if #clients == 0 then
+        return {}
+      end
 
       local function collect_paths(tbl, prefix)
         local paths = {}
-        if type(tbl) ~= "table" then return paths end
+        if type(tbl) ~= 'table' then
+          return paths
+        end
         for k, v in pairs(tbl) do
-          local full = prefix ~= "" and (prefix .. "." .. k) or k
+          local full = prefix ~= '' and (prefix .. '.' .. k) or k
           table.insert(paths, full)
-          if type(v) == "table" and not vim.islist(v) then
+          if type(v) == 'table' and not vim.islist(v) then
             vim.list_extend(paths, collect_paths(v, full))
           end
         end
         return paths
       end
 
-      local all = collect_paths(clients[1].config, "")
-      return vim.tbl_filter(function(p) return vim.startswith(p, arg_lead) end, all)
+      local all = collect_paths(clients[1].config, '')
+      return vim.tbl_filter(function(p)
+        return vim.startswith(p, arg_lead)
+      end, all)
     end
 
     -- arg 3: current value as a hint
     if nargs == 3 then
       local server_name, dotpath = args[2], args[3]
       local clients = vim.lsp.get_clients({ name = server_name })
-      if #clients == 0 then return {} end
+      if #clients == 0 then
+        return {}
+      end
 
       local val = clients[1].config
-      for _, key in ipairs(vim.split(dotpath, ".", { plain = true })) do
-        if type(val) ~= "table" then break end
+      for _, key in ipairs(vim.split(dotpath, '.', { plain = true })) do
+        if type(val) ~= 'table' then
+          break
+        end
         val = val[key]
       end
 
       if val ~= nil then
-        return { vim.inspect(val, { newline = " ", indent = "" }) }
+        return { vim.inspect(val, { newline = ' ', indent = '' }) }
       end
     end
 
     return {}
   end,
 })
+
+require("vim._core.ui2").enable {
+  enable = true,
+  msg = { -- Options related to the message module.
+    ---@type 'cmd'|'msg' Default message target, either in the
+    ---cmdline or in a separate ephemeral message window.
+    ---@type string|table<string, 'cmd'|'msg'|'pager'> Default message target
+    ---or table mapping |ui-messages| kinds and triggers to a target.
+    targets = "cmd",
+    cmd = { -- Options related to messages in the cmdline window.
+      height = 0.5, -- Maximum height while expanded for messages beyond 'cmdheight'.
+    },
+    dialog = { -- Options related to dialog window.
+      height = 0.5, -- Maximum height.
+    },
+    msg = { -- Options related to msg window.
+      height = 0.5, -- Maximum height.
+      timeout = 4000, -- Time a message is visible in the message window.
+    },
+    pager = { -- Options related to message window.
+      height = 0.5, -- Maximum height.
+    },
+  },
+}
