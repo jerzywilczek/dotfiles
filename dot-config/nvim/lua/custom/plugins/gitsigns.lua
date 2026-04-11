@@ -1,4 +1,3 @@
----@module 'custom.pack'
 ---@type PluginSpec[]
 return {
   'gh:lewis6991/gitsigns.nvim',

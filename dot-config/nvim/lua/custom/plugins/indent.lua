@@ -1,4 +1,3 @@
----@module 'custom.pack'
 ---@type PluginSpec[]
 return {
   'https://github.com/tpope/vim-sleuth',

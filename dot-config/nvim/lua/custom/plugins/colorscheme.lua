@@ -1,4 +1,3 @@
----@module 'custom.pack'
 ---@type PluginSpecTable
 return {
   'gh:catppuccin/nvim',

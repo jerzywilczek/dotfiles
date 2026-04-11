@@ -37,6 +37,14 @@
       "rev": "426dbebe06b5c69fd846ceb17b42e12f890aedf1",
       "src": "https://github.com/catppuccin/nvim"
     },
+    "nvim-dap": {
+      "rev": "45a69eba683a2c448dd9ecfc4de89511f0646b5f",
+      "src": "https://github.com/mfussenegger/nvim-dap"
+    },
+    "nvim-dap-view": {
+      "rev": "64e2d57788ef93469af1e0319311f669a3126cd3",
+      "src": "https://github.com/igorlfs/nvim-dap-view"
+    },
     "nvim-lspconfig": {
       "rev": "c588db330592fa477a70d2fee6ba20a57194bdc3",
       "src": "https://github.com/neovim/nvim-lspconfig"
