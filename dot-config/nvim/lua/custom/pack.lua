@@ -18,13 +18,14 @@ local M = {}
 ---@alias PluginSpec PluginSpecTable | string
 
 ---@param plugins_dir string
----@return PluginSpec[]
+---@return PluginSpecTable[]
 local function gather_specs(plugins_dir)
   local specs = {}
   local full_path = vim.fn.stdpath('config') .. '/lua/' .. plugins_dir
 
-  local handle = vim.uv.fs_scandir(full_path)
+  local handle, err = vim.uv.fs_scandir(full_path)
   if not handle then
+    vim.print('Error while importing plugin specs: ' .. err)
     return specs
   end
 
@@ -37,9 +38,16 @@ local function gather_specs(plugins_dir)
     if filetype == 'file' and name:match('%.lua$') then
       local module_name = name:gsub('%.lua$', '')
       local module_path = plugins_dir:gsub('/', '.') .. '.' .. module_name
-      local sourced_spec = require(module_path)
+      local status, sourced_spec = pcall(function()
+        return require(module_path)
+      end)
+      if not status then
+        local error = sourced_spec
+        vim.print("Error while trying to import spec from '" .. module_path .. "': " .. error)
+        goto continue
+      end
 
-      local add_spec = function(spec)
+      local function add_spec(spec)
         if type(spec) == 'table' then
           table.insert(specs, spec)
         else
@@ -57,6 +65,7 @@ local function gather_specs(plugins_dir)
         end
       end
     end
+    ::continue::
   end
 
   return specs
@@ -99,11 +108,21 @@ function M.setup(plugins_dir)
     local opts = spec.opts or {}
 
     if spec.configure then
-      spec.configure(opts)
+      local status, error = pcall(spec.configure, opts)
+      if not status then
+        vim.print("Error in user 'configure' function for plugin '" .. spec[1] .. "':\n" .. error)
+      end
     else
       local split_name = vim.split(spec[1], '/')
       local main_module = split_name[table.maxn(split_name)]:gsub('%.nvim', '')
-      require(main_module).setup(opts)
+      local status, error = pcall(function()
+        require(main_module).setup(opts)
+      end)
+
+      if not status then
+        vim.print("Error in autodetected setup function for plugin '" ..
+        spec[1] .. "' - 'require(" .. main_module .. ").setup':\n" .. error)
+      end
     end
 
     ::continue::
