@@ -17,6 +17,7 @@ local M = {}
 
 ---@alias PluginSpec PluginSpecTable | string
 
+--- Finds and loads plugin specs from a given directory
 ---@param plugins_dir string
 ---@return PluginSpecTable[]
 local function gather_specs(plugins_dir)
@@ -25,7 +26,7 @@ local function gather_specs(plugins_dir)
 
   local handle, err = vim.uv.fs_scandir(full_path)
   if not handle then
-    vim.print('Error while importing plugin specs: ' .. err)
+    vim.notify('Error while importing plugin specs: ' .. err, vim.log.levels.ERROR)
     return specs
   end
 
@@ -43,7 +44,7 @@ local function gather_specs(plugins_dir)
       end)
       if not status then
         local error = sourced_spec
-        vim.print("Error while trying to import spec from '" .. module_path .. "': " .. error)
+        vim.notify("Error while trying to import spec from '" .. module_path .. "': " .. error, vim.log.levels.ERROR)
         goto continue
       end
 
@@ -110,7 +111,7 @@ function M.setup(plugins_dir)
     if spec.configure then
       local status, error = pcall(spec.configure, opts)
       if not status then
-        vim.print("Error in user 'configure' function for plugin '" .. spec[1] .. "':\n" .. error)
+        vim.notify("Error in user 'configure' function for plugin '" .. spec[1] .. "':\n" .. error, vim.log.levels.ERROR)
       end
     else
       local split_name = vim.split(spec[1], '/')
@@ -120,8 +121,11 @@ function M.setup(plugins_dir)
       end)
 
       if not status then
-        vim.print("Error in autodetected setup function for plugin '" ..
-        spec[1] .. "' - 'require(" .. main_module .. ").setup':\n" .. error)
+        vim.notify(
+          "Error in autodetected setup function for plugin '" ..
+          spec[1] .. "' - 'require(" .. main_module .. ").setup':\n" .. error,
+          vim.log.levels.ERROR
+        )
       end
     end
 

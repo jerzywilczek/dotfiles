@@ -65,23 +65,20 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
-local function trim_whitespaces()
-  local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-  for i, line in ipairs(lines) do
-    lines[i] = string.gsub(line, '%s+$', '')
-  end
-  vim.api.nvim_buf_set_lines(0, 0, -1, true, lines)
-end
-
-local remove_trailing_whitespace_group = vim.api.nvim_create_augroup('RmTrWhitespace', {})
 vim.api.nvim_create_autocmd('BufWritePre', {
-  callback = trim_whitespaces,
-  group = remove_trailing_whitespace_group,
+  group = vim.api.nvim_create_augroup('RemoveTrailingWhitespace', {}),
+  callback = function()
+    local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+    for i, line in ipairs(lines) do
+      lines[i] = string.gsub(line, '%s+$', '')
+    end
+    vim.api.nvim_buf_set_lines(0, 0, -1, true, lines)
+  end,
   pattern = '*',
 })
 
 vim.api.nvim_create_autocmd('BufWinEnter', {
-  group = vim.api.nvim_create_augroup('help_window_right', {}),
+  group = vim.api.nvim_create_augroup('SplitHelpRight', {}),
   pattern = { '*.txt' },
   callback = function()
     if vim.o.filetype == 'help' then
@@ -90,11 +87,31 @@ vim.api.nvim_create_autocmd('BufWinEnter', {
   end,
 })
 
-if vim.env.ZELLIJ then
-  os.execute('zellij action switch-mode locked')
-end
-
 vim.cmd.packadd('nvim.undotree')
+
+require('vim._core.ui2').enable({
+  enable = true,
+  msg = { -- Options related to the message module.
+    ---@type 'cmd'|'msg' Default message target, either in the
+    ---cmdline or in a separate ephemeral message window.
+    ---@type string|table<string, 'cmd'|'msg'|'pager'> Default message target
+    ---or table mapping |ui-messages| kinds and triggers to a target.
+    targets = 'cmd',
+    cmd = {           -- Options related to messages in the cmdline window.
+      height = 0.5,   -- Maximum height while expanded for messages beyond 'cmdheight'.
+    },
+    dialog = {        -- Options related to dialog window.
+      height = 0.5,   -- Maximum height.
+    },
+    msg = {           -- Options related to msg window.
+      height = 0.5,   -- Maximum height.
+      timeout = 4000, -- Time a message is visible in the message window.
+    },
+    pager = {         -- Options related to message window.
+      height = 0.5,   -- Maximum height.
+    },
+  },
+})
 
 -- Overwrite a single option for a running LSP client by server name.
 -- Usage: lsp_set("lua_ls", "settings.Lua.diagnostics.globals", { "vim" })
@@ -107,13 +124,14 @@ local function lsp_set(server_name, dotpath, value)
       tbl = tbl[keys[i]]
     end
     tbl[keys[#keys]] = value
-    client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
+    client:notify(vim.lsp.protocol.Methods.workspace_didChangeConfiguration, { settings = client.config.settings })
   end
 end
 
+-- the completion function for this is very long. don't know what to do about it
 vim.api.nvim_create_user_command('LspSet', function(opts)
   local server, dotpath, raw_value = opts.fargs[1], opts.fargs[2], table.concat(opts.fargs, ' ', 3)
-  local ok, value = pcall(loadstring('return ' .. raw_value))
+  local ok, value = pcall(loadstring('return ' .. raw_value) or function() end)
   if not ok then
     value = raw_value
   end
@@ -194,27 +212,3 @@ end, {
     return {}
   end,
 })
-
-require("vim._core.ui2").enable {
-  enable = true,
-  msg = { -- Options related to the message module.
-    ---@type 'cmd'|'msg' Default message target, either in the
-    ---cmdline or in a separate ephemeral message window.
-    ---@type string|table<string, 'cmd'|'msg'|'pager'> Default message target
-    ---or table mapping |ui-messages| kinds and triggers to a target.
-    targets = "cmd",
-    cmd = { -- Options related to messages in the cmdline window.
-      height = 0.5, -- Maximum height while expanded for messages beyond 'cmdheight'.
-    },
-    dialog = { -- Options related to dialog window.
-      height = 0.5, -- Maximum height.
-    },
-    msg = { -- Options related to msg window.
-      height = 0.5, -- Maximum height.
-      timeout = 4000, -- Time a message is visible in the message window.
-    },
-    pager = { -- Options related to message window.
-      height = 0.5, -- Maximum height.
-    },
-  },
-}
