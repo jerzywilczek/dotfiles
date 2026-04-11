@@ -1,4 +1,3 @@
----@module 'custom.pack'
 ---@type PluginSpec[]
 return {
   'gh:nvim-treesitter/nvim-treesitter-textobjects',

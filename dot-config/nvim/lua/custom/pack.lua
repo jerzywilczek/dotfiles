@@ -14,6 +14,8 @@ local M = {}
 ---@field configure? fun(opts: table)
 --- higher priority = earlier configure
 ---@field priority? number
+--- a disabled plugin will not be downloaded or loaded
+---@field disable? boolean
 
 ---@alias PluginSpec PluginSpecTable | string
 
@@ -90,6 +92,7 @@ end
 ---@param plugins_dir string
 function M.setup(plugins_dir)
   local specs = gather_specs(plugins_dir)
+  specs = vim.tbl_filter(function (spec) return spec.disable ~= true end, specs)
 
   table.sort(specs, function(a, b)
     return (a.priority or 0) > (b.priority or 0)
