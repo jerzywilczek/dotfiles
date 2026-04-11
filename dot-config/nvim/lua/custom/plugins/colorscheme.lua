@@ -1,13 +1,12 @@
+---@type PluginSpecTable
 return {
-  'catppuccin/nvim',
-  name = 'catppuccin',
-  lazy = false,
+  'gh:catppuccin/nvim',
   priority = 1000,
-  config = function()
-    require('catppuccin').setup {
+  configure = function ()
+    require('catppuccin').setup({
       flavor = 'macchiato',
       auto_integrations = true,
-    }
-    vim.cmd.colorscheme 'catppuccin-macchiato'
-  end,
+    })
+    vim.cmd.colorscheme('catppuccin-macchiato')
+  end
 }

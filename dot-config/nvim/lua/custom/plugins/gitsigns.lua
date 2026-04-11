@@ -1,5 +1,6 @@
+---@type PluginSpec[]
 return {
-  'lewis6991/gitsigns.nvim',
+  'gh:lewis6991/gitsigns.nvim',
   opts = {
     signs = {
       add = { text = '+' },
