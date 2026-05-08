@@ -1,3 +1,4 @@
+# !! migrated to [codeberg](https://codeberg.org/jerzywilczek/dotfiles) !!
 # dotfiles
 
 hello welcome to my dotfiles
