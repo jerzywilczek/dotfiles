@@ -3,9 +3,6 @@
     "layer": "top",
     "position": "top",
     "margin": "3em",
-    // "height": 30, // Waybar height (to be removed for auto height)
-    // "width": 1280, // Waybar width
-    // "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": [
         "hyprland/workspaces",
@@ -13,20 +10,34 @@
     ],
 
     "modules-right": [
-        "pulseaudio",
-        "keyboard-state",
-        "power-profiles-daemon",
-        "battery",
-        "clock",
+        "group/system",
         "tray",
-        "custom/lock",
-        "custom/power"
+        "group/session"
     ],
 
     "modules-center": [
         "hyprland/window",
         "niri/window"
     ],
+
+    "group/system": {
+        "orientation": "horizontal",
+        "modules": [
+            "pulseaudio",
+            "keyboard-state",
+            "power-profiles-daemon",
+            "battery",
+            "clock"
+        ]
+    },
+
+    "group/session": {
+        "orientation": "horizontal",
+        "modules": [
+            "custom/lock",
+            "custom/power"
+        ]
+    },
 
     // Modules configuration
     "hyprland/workspaces": {
@@ -49,17 +60,6 @@
             "Signal": "󰭹",
             "Games": ""
         }
-    },
-
-    "network": {
-        "format-wifi": "  {essid} ({signalStrength}%)",
-        "format-ethernet": "  {ifname}",
-        "format-disconnected": "󰖪", //An empty format will hide the module.
-        "tooltip-format": "{ipaddr}/{cidr}",
-        "tooltip-format-wifi": "{ipaddr}/{cidr}",
-        "tooltip-format-ethernet": "{ipaddr}/{cidr}",
-        "tooltip-format-disconnected": "Disconnected",
-        "max-length": 20
     },
 
     "power-profiles-daemon": {
@@ -85,7 +85,7 @@
         "format": "{icon}",
         "format-icons": {
             "locked": "󰪛",
-            "unlocked": ""
+            "unlocked": "󰪛"
         }
     },
 

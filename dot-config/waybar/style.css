@@ -14,14 +14,32 @@ window#waybar {
     border: 0.1em solid @overlay1;
 }
 
-/* --- Container Modules (#window & #workspaces) --- */
+/* --- Container Modules --- */
 #window,
-#workspaces {
+#workspaces,
+#system,
+#session,
+#tray {
     background-color: @surface0;
     border: 0.1em solid @overlay0;
     border-radius: 0.5em;
+}
+
+#window,
+#workspaces {
     margin: 0.5em;
     padding: 0 0.25em;
+}
+
+#system,
+#session {
+    margin: 0.5em 0.25em;
+    padding: 0 0.15em;
+}
+
+#tray {
+    margin: 0.5em 0.25em;
+    padding: 0.1em 1em;
 }
 
 #workspaces button {
@@ -35,20 +53,14 @@ window#waybar {
 #workspaces button.active { color: @peach; }
 #workspaces button:hover { color: @maroon; }
 
-/* --- Shared Module Styles (Deduplicated) --- */
-#tray,
-#clock,
-#battery,
-#pulseaudio,
-#custom-lock,
-#network,
-#power-profiles-daemon,
-#custom-power {
-    background-color: @surface0;
+/* --- Group Children --- */
+#system > widget > .module,
+#session > widget > .module {
     padding: 0.1em 1em;
-    margin: 0.5em 0;
-    border-top: 0.1em solid @overlay0;
-    border-bottom: 0.1em solid @overlay0;
+}
+
+#system > widget > #keyboard-state {
+    padding: 0;
 }
 
 /* --- Keyboard State Logic --- */
@@ -67,50 +79,19 @@ window#waybar {
     margin: 0;
     padding: 0;
     color: transparent;
-
-    /* Define base state for background/borders to enable transition */
-    background-color: transparent;
-    border-top: 0.1em solid transparent;
-    border-bottom: 0.1em solid transparent;
 }
 
 #keyboard-state label.locked {
     font-size: 15px;
-    margin: 0.5em 0;
     padding: 0.1em 1em;
     color: @green;
-
-    /* Visible state colors */
-    background-color: @surface0;
-    border-top: 0.1em solid @overlay0;
-    border-bottom: 0.1em solid @overlay0;
-}
-
-/* --- Specific Module Overrides --- */
-
-/* Left Capsule Edges */
-#pulseaudio,
-#custom-lock {
-    border-left: 0.1em solid @overlay0;
-    border-radius: 0.5em 0 0 0.5em;
-    /* Pulseaudio left margin removed as requested */
-}
-
-/* Right Capsule Edges */
-#clock,
-#custom-power {
-    border-right: 0.1em solid @overlay0;
-    border-radius: 0 0.5em 0.5em 0;
-    margin-right: 0.5em;
 }
 
 /* Individual Colors */
 #clock { color: @blue; }
-#network { color: @mauve; }
 #pulseaudio { color: @maroon; }
 #custom-lock { color: @lavender; }
 #custom-power { color: @red; }
-#backlight { color: @yellow; }
 
 /* Battery States */
 #battery { color: @green; }
@@ -120,10 +101,3 @@ window#waybar {
 #power-profiles-daemon.performance { color: @red; }
 #power-profiles-daemon.balanced { color: @yellow; }
 #power-profiles-daemon.power-saver { color: @green; }
-
-/* Tray (Isolated Capsule) */
-#tray {
-    margin-right: 0.5em;
-    border-radius: 0.5em;
-    border: 0.1em solid @overlay0;
-}
