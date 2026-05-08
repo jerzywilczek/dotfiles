@@ -3,7 +3,7 @@
 
 [user]
     signingkey = /home/jerzywilczek/.ssh/id_ed25519.pub
-    email = jerzykwilczek@gmail.com
+    email = jerzywilczek@proton.me
     name = Jerzy Wilczek
 
 [commit]
