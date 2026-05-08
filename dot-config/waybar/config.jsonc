@@ -14,7 +14,6 @@
 
     "modules-right": [
         "pulseaudio",
-        "network",
         "keyboard-state",
         "power-profiles-daemon",
         "battery",
